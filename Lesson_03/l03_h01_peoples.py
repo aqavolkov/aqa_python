@@ -1,4 +1,5 @@
-"""HW:3[Volkov Anton].
+"""
+HW:3[Volkov Anton].
 
 You have list of tuples.
 Each tuple represents: name, age, some sum, last name, sex
