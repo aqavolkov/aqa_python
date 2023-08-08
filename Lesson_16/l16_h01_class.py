@@ -14,27 +14,18 @@ HW:16[Volkov Anton].
 class MonoBankCard:
     """Class for creating cards."""
 
-    _lvl_card = None
+    PIN_MAX_SIZE = 4
+    BANK_ID = 5375
 
     def __init__(self, card_num, cvv, pin, name, surname, end_date):
         """Initialize class."""
         self._card_num = card_num
-        self._cvv = cvv
-        self._pin = pin
+        self.__cvv = cvv
+        self.__pin = pin
         self._name = name
         self._surname = surname
         self._end_date = end_date
         self._lvl_card = 'Universal'
-
-    @classmethod
-    def get_lvl_card(cls):
-        """Check the level of the card."""
-        return cls._lvl_card
-
-    @staticmethod
-    def max_lvl_card():
-        """Return the maximum level of the card."""
-        return 'Platinum'
 
     @property
     def card_num(self):
@@ -47,26 +38,51 @@ class MonoBankCard:
         self._card_num = new_card_num
 
     @property
+    def cvv(self):
+        """Get the CVV."""
+        return self.__cvv
+
+    @property
     def pin(self):
         """Get the PIN."""
-        return self._pin
+        return self.__pin
 
     @pin.setter
     def pin(self, new_pin):
         """Set the PIN."""
-        self._pin = new_pin
+        if len(new_pin) == MonoBankCard.PIN_MAX_SIZE:
+            self.__pin = new_pin
+        else:
+            print(f'PIN should be {MonoBankCard.PIN_MAX_SIZE} size.')
+
+    def block_card(self):
+        """Block the card."""
+        print('Card is blocked.')
+
+    def pay(self, amount):
+        """Make a payment."""
+        print(f'Payment of ${amount}.')
+
+    @classmethod
+    def get_bank_id(cls):
+        """Get the bank ID."""
+        return cls.BANK_ID
+
+    @staticmethod
+    def validate_card_number(card_num):
+        """Validate the card number."""
+        if len(card_num) == 16 and card_num.isnumeric():
+            return True
+        return False
 
 
 if __name__ == '__main__':
-    new_card = MonoBankCard('4149606571345678', 911, '4561',
+    new_card = MonoBankCard('5678606571345678', 911, '4561',
                             'Daniel', 'Craig', '12/29')
-    print(new_card.__dict__)
-
-    # Max lvl of card
-    print(f'Max lvl of card: {MonoBankCard.max_lvl_card()}')
 
     # Getters
     print(new_card.card_num)
+    print(new_card.cvv)
     print(new_card.pin)
 
     # Setters
@@ -75,3 +91,16 @@ if __name__ == '__main__':
 
     print(new_card.card_num)
     print(new_card.pin)
+
+    # Block the card
+    new_card.block_card()
+
+    # Make a payment
+    new_card.pay(100)
+
+    # Validate a card number
+    print(MonoBankCard.
+          validate_card_number(new_card.card_num))  # Should print False
+
+    # Display card information
+    print(new_card.__dict__)
